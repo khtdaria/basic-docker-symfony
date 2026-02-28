@@ -1,0 +1,22 @@
+includes:
+  - ../../vendor/phpstan/phpstan-doctrine/extension.neon
+  - ../../vendor/phpstan/phpstan-symfony/extension.neon
+  - ../../vendor/phpstan/phpstan-phpunit/extension.neon
+  - ../../vendor/phpstan/phpstan-symfony/rules.neon
+  - ../../vendor/phpstan/phpstan-phpunit/rules.neon
+  - ../../vendor/phpstan/phpstan-strict-rules/rules.neon
+  - ../../vendor/phpstan/phpstan-deprecation-rules/rules.neon
+
+parameters:
+  level: 10
+  paths:
+    - ../../config
+    - ../../src
+    - ../../tests
+  doctrine:
+    reportDynamicQueryBuilders: true
+    reportUnknownTypes: true
+    literalString: true
+  tmpDir: ../../var/cache/phpstan
+  scanFiles:
+    - ../../vendor/symfony/dependency-injection/Loader/Configurator/ContainerConfigurator.php
