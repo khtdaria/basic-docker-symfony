@@ -20,6 +20,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 
+/**
+ * @extends AbstractCrudController<Video>
+ */
 final class VideoCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string

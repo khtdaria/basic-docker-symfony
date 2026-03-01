@@ -37,6 +37,8 @@ class VrDevice implements PasswordAuthenticatedUserInterface, UserInterface
     #[Assert\NotBlank]
     private string $identifier;
 
+    private ?string $plainPassword = null;
+
     #[ORM\Column]
     private string $password;
 
@@ -90,6 +92,16 @@ class VrDevice implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function eraseCredentials(): void
     {
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 
     public function getPassword(): string

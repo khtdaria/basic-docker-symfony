@@ -40,6 +40,8 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
+    private ?string $plainPassword = null;
+
     #[ORM\Column]
     private string $password;
 
@@ -118,6 +120,16 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 
     public function getPassword(): string

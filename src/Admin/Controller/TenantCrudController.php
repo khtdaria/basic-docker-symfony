@@ -19,6 +19,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\BooleanFilter;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+/**
+ * @extends AbstractCrudController<Tenant>
+ */
 #[IsGranted('ROLE_SUPER_ADMIN')]
 final class TenantCrudController extends AbstractCrudController
 {
