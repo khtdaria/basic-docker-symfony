@@ -1,0 +1,68 @@
+:root {
+    --clr-black:        #000000;
+    --clr-dark-900:     #111111;
+    --clr-dark-800:     #222222;
+    --clr-dark-700:     #333333;
+    --clr-dark-600:     #444444;
+    --clr-dark-500:     #555555;
+    --clr-dark-400:     #666666;
+    --clr-gray-400:     #aaaaaa;
+    --clr-white:        #ffffff;
+    --clr-off-white:    #eeeeee;
+    --clr-danger-900:   #330000;
+    --clr-danger-700:   #550000;
+}
+
+body.page-login {
+    background-color: var(--clr-black) !important;
+}
+
+.login-logo {
+    color: var(--clr-white);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.login-wrapper .content, .login-card {
+    background-color: var(--clr-dark-900) !important;
+    border: 1px solid var(--clr-dark-700) !important;
+    color: var(--clr-white) !important;
+}
+
+.login-card .card-body {
+    color: var(--clr-white) !important;
+}
+
+.login-card .form-label,
+.login-card .form-check-label {
+    color: var(--clr-off-white) !important;
+}
+
+.login-card .form-control {
+    background-color: var(--clr-dark-800) !important;
+    color: var(--clr-white) !important;
+    border-color: var(--clr-dark-600) !important;
+}
+
+.login-card .form-control::placeholder {
+    color: var(--clr-gray-400) !important;
+}
+
+.login-card .btn-primary {
+    background-color: var(--clr-dark-600) !important;
+    border-color: var(--clr-dark-500) !important;
+    color: var(--clr-white) !important;
+}
+
+.login-card .btn-primary:hover,
+.login-card .btn-primary:focus {
+    background-color: var(--clr-dark-500) !important;
+    border-color: var(--clr-dark-400) !important;
+}
+
+.login-card .alert-danger {
+    background-color: var(--clr-danger-900) !important;
+    border-color: var(--clr-danger-700) !important;
+    color: var(--clr-white) !important;
+}
