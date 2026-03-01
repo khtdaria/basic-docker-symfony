@@ -2,8 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Symfony\Component\Routing\Loader\Configurator;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-return Routes::config([
+return static function (RoutingConfigurator $routes): void {
+    $routes->import('../src/Api/V1/Controller/', 'attribute')
+        ->prefix('/api/v1');
 
-]);
+    $routes->import('../src/Admin/Controller/', 'attribute')
+        ->prefix('');
+};
