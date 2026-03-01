@@ -1,0 +1,57 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    <h1>{{ 'Dashboard'|trans }}</h1>
+{% endblock %}
+
+{% block main %}
+<div class="row g-4 mt-2">
+    <div class="col-md-6 col-xl-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fa fa-building fa-2x me-3 text-primary"></i>
+                    <div>
+                        <h5 class="mb-0">{{ app.user.tenant.name }}</h5>
+                        <small class="text-muted">
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <span class="badge bg-danger">{{ 'Super Admin'|trans }}</span>
+                            {% elseif is_granted('ROLE_TENANT_ADMIN') %}
+                                <span class="badge bg-warning text-dark">{{ 'Tenant Admin'|trans }}</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ 'User'|trans }}</span>
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+                <p class="text-muted mb-0">Logged in as <strong>{{ app.user.fullName }}</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h6 class="fw-bold mb-3">{{ 'Quick Actions'|trans }}</h6>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <a href="{{ vrUrl }}"
+                           class="btn btn-sm btn-outline-primary w-100 d-flex align-items-center justify-content-start gap-2 text-start">
+                            <i class="fas fa-vr-cardboard"></i>
+                            <span>{{ 'Add VR Device'|trans }}</span>
+                        </a>
+                    </li>
+
+                    <li class="mb-2">
+                        <a href="{{ areaUrl }}"
+                           class="btn btn-sm btn-outline-secondary w-100 d-flex align-items-center justify-content-start gap-2 text-start">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ 'Add Location'|trans }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
