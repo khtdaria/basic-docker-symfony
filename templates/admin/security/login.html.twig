@@ -1,0 +1,56 @@
+{% extends '@EasyAdmin/page/login_minimal.html.twig' %}
+
+{% block body_class 'page-login d-flex justify-content-center align-items-center' %}
+{% block page_title %}{{ 'VR Platform — Login'|trans }}{% endblock %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ asset('css/admin/login.css') }}">
+{% endblock %}
+
+{% block wrapper_wrapper %}
+    {{ include('@EasyAdmin/flash_messages.html.twig') }}
+
+    <div class="login-wrapper d-flex flex-column align-items-center w-100">
+        <header class="main-header mb-4">
+            <p class="login-logo mb-0">🥽 {{ 'VR Platform — Login'|trans }}</p>
+        </header>
+
+        <section class="content w-100">
+            {% block login_form_wrapper %}
+                <div class="card shadow-sm mx-auto login-card">
+                    <div class="card-body">
+                        {% if error %}
+                            <div class="alert alert-danger">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
+
+                        {{ form_start(loginForm) }}
+
+                            {{ form_row(loginForm.email) }}
+                            {{ form_row(loginForm.password) }}
+
+                            <div class="form-check mb-3">
+                                <input type="checkbox"
+                                       id="remember_me"
+                                       name="_remember_me"
+                                       value="1"
+                                       class="form-check-input">
+                                <label class="form-check-label" for="remember_me">{{ 'Remember me'|trans }}</label>
+                            </div>
+
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">{{ 'Sign In'|trans }}</button>
+                            </div>
+
+                        {{ form_end(loginForm) }}
+                    </div>
+                </div>
+            {% endblock login_form_wrapper %}
+        </section>
+    </div>
+{% endblock %}

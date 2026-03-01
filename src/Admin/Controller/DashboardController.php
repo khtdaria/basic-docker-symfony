@@ -8,6 +8,7 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Option\ColorScheme;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,8 @@ final class DashboardController extends AbstractDashboardController
             ->setTitle('VR Platform')
             ->setFaviconPath('favicon.ico')
             ->setTranslationDomain('messages')
-            ->renderContentMaximized();
+            ->renderContentMaximized()
+            ->setDefaultColorScheme(ColorScheme::DARK);
     }
 
     public function configureMenuItems(): iterable
