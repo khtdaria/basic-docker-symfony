@@ -11,18 +11,32 @@ final readonly class VideoDTO
     public string $id;
     public string $title;
     public ?string $description;
-    public string $url;
-    public ?int $durationSeconds;
-    public ?string $thumbnailUrl;
+    public ?string $hlsUrl;
+    public ?string $previewImageUrl;
+    public ?int $durationSec;
+    public ?string $codec;
+    public string $status;
 
-    public function __construct(Video $video)
+    public function __construct(Video $video, string $baseUrl)
     {
-        $this->id = $video->getId()->toString();
+        $videoId = $video->getId()->toString();
+
+        $this->id = $videoId;
         $this->title = $video->getTitle();
         $this->description = $video->getDescription();
-        $this->url = $video->getUrl();
-        $this->durationSeconds = $video->getDurationSeconds();
-        $this->thumbnailUrl = $video->getThumbnailUrl();
+        $this->durationSec = $video->getDurationSec();
+        $this->codec = $video->getCodec();
+        $this->status = $video->getStatus()->value;
+
+        $storageBase = $baseUrl . '/storage/videos/' . $videoId;
+
+        $this->hlsUrl = $video->getHlsPath() !== null
+            ? $storageBase . '/' . $video->getHlsPath()
+            : null;
+
+        $this->previewImageUrl = $video->getPreviewImagePath() !== null
+            ? $storageBase . '/' . $video->getPreviewImagePath()
+            : null;
     }
 
     /**
@@ -34,9 +48,11 @@ final readonly class VideoDTO
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'url' => $this->url,
-            'duration_seconds' => $this->durationSeconds,
-            'thumbnail_url' => $this->thumbnailUrl,
+            'hlsUrl' => $this->hlsUrl,
+            'previewImageUrl' => $this->previewImageUrl,
+            'durationSec' => $this->durationSec,
+            'codec' => $this->codec,
+            'status' => $this->status,
         ];
     }
 }

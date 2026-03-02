@@ -19,3 +19,6 @@ var
 /phpunit.xml
 /.phpunit.cache/
 ###< phpunit/phpunit ###
+
+# Video storage
+/storage/videos/

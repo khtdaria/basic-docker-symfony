@@ -6,8 +6,8 @@ namespace App\Repository;
 
 use App\Entity\Video;
 use App\Entity\VrDevice;
+use App\Enum\VideoStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -20,19 +20,36 @@ class VideoRepository extends ServiceEntityRepository
         parent::__construct($registry, Video::class);
     }
 
-    /** @return Video[] */
-    public function findForDevice(VrDevice $device): array
+    /**
+     * Returns ready videos for device: device-specific first, falls back to tenant videos.
+     *
+     * @return Video[]
+     */
+    public function findReadyForDevice(VrDevice $device): array
     {
-        /** @var Video[] $results */
-        $results = $this->createQueryBuilder('v')
+        $deviceVideos = $this->createQueryBuilder('v')
             ->join('v.vrDevices', 'd')
             ->where('d.id = :deviceId')
             ->andWhere('v.isActive = true')
+            ->andWhere('v.status = :status')
             ->setParameter('deviceId', $device->getId(), 'uuid')
+            ->setParameter('status', VideoStatus::Ready)
             ->orderBy('v.title', 'ASC')
             ->getQuery()
             ->getResult();
 
-        return $results;
+        return $deviceVideos;
+    }
+
+    public function findReadyById(string $id): ?Video
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v.id = :id')
+            ->andWhere('v.isActive = true')
+            ->andWhere('v.status = :status')
+            ->setParameter('id', $id, 'uuid')
+            ->setParameter('status', VideoStatus::Ready)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }

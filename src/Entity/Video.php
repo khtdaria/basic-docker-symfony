@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\VideoStatus;
 use App\Repository\VideoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
 #[ORM\Table(name: 'videos')]
@@ -24,24 +24,31 @@ class Video
     private Uuid $id;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
     private string $title;
 
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    // todo: Implement uploading functionality for videos
-    #[ORM\Column(length: 2048)]
-    #[Assert\NotBlank]
-    #[Assert\Url]
-    private string $url;
+    #[ORM\Column(length: 20, enumType: VideoStatus::class)]
+    private VideoStatus $status = VideoStatus::Pending;
+
+    #[ORM\Column(length: 512, nullable: true)]
+    private ?string $originalPath = null;
+
+    #[ORM\Column(length: 512, nullable: true)]
+    private ?string $hlsPath = null;
+
+    #[ORM\Column(length: 512, nullable: true)]
+    private ?string $previewImagePath = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\PositiveOrZero]
-    private ?int $durationSeconds = null;
+    private ?int $durationSec = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    private ?string $thumbnailUrl = null;
+    private ?string $codec = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $processingError = null;
 
     #[ORM\Column]
     private bool $isActive = true;
@@ -103,38 +110,86 @@ class Video
         return $this;
     }
 
-    public function getUrl(): string
+    public function getStatus(): VideoStatus
     {
-        return $this->url;
+        return $this->status;
     }
 
-    public function setUrl(string $url): static
+    public function setStatus(VideoStatus $status): static
     {
-        $this->url = $url;
+        $this->status = $status;
 
         return $this;
     }
 
-    public function getDurationSeconds(): ?int
+    public function getOriginalPath(): ?string
     {
-        return $this->durationSeconds;
+        return $this->originalPath;
     }
 
-    public function setDurationSeconds(?int $durationSeconds): static
+    public function setOriginalPath(?string $originalPath): static
     {
-        $this->durationSeconds = $durationSeconds;
+        $this->originalPath = $originalPath;
 
         return $this;
     }
 
-    public function getThumbnailUrl(): ?string
+    public function getHlsPath(): ?string
     {
-        return $this->thumbnailUrl;
+        return $this->hlsPath;
     }
 
-    public function setThumbnailUrl(?string $thumbnailUrl): static
+    public function setHlsPath(?string $hlsPath): static
     {
-        $this->thumbnailUrl = $thumbnailUrl;
+        $this->hlsPath = $hlsPath;
+
+        return $this;
+    }
+
+    public function getPreviewImagePath(): ?string
+    {
+        return $this->previewImagePath;
+    }
+
+    public function setPreviewImagePath(?string $previewImagePath): static
+    {
+        $this->previewImagePath = $previewImagePath;
+
+        return $this;
+    }
+
+    public function getDurationSec(): ?int
+    {
+        return $this->durationSec;
+    }
+
+    public function setDurationSec(?int $durationSec): static
+    {
+        $this->durationSec = $durationSec;
+
+        return $this;
+    }
+
+    public function getCodec(): ?string
+    {
+        return $this->codec;
+    }
+
+    public function setCodec(?string $codec): static
+    {
+        $this->codec = $codec;
+
+        return $this;
+    }
+
+    public function getProcessingError(): ?string
+    {
+        return $this->processingError;
+    }
+
+    public function setProcessingError(?string $processingError): static
+    {
+        $this->processingError = $processingError;
 
         return $this;
     }

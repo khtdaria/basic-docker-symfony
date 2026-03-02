@@ -10,6 +10,8 @@ use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use function count;
@@ -24,15 +26,16 @@ final class VideoController extends AbstractController
     }
 
     #[Route('', name: 'list', methods: ['GET'])]
-    public function list(#[CurrentUser] VrDevice $device): JsonResponse
+    public function list(#[CurrentUser] VrDevice $device, Request $request): JsonResponse
     {
         $device->markSeen();
         $this->em->flush();
 
-        $videos = $this->videoRepository->findForDevice($device);
+        $baseUrl = $request->getSchemeAndHttpHost();
+        $videos = $this->videoRepository->findReadyForDevice($device);
 
         $payload = array_map(
-            static fn (mixed $v) => new VideoDTO($v)->toArray(),
+            static fn (mixed $v) => new VideoDTO($v, $baseUrl)->toArray(),
             $videos,
         );
 
@@ -40,5 +43,19 @@ final class VideoController extends AbstractController
             'data' => $payload,
             'total' => count($payload),
         ]);
+    }
+
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(string $id, Request $request): JsonResponse
+    {
+        $video = $this->videoRepository->findReadyById($id);
+
+        if (null === $video) {
+            return $this->json(['error' => 'Video not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $baseUrl = $request->getSchemeAndHttpHost();
+
+        return $this->json(new VideoDTO($video, $baseUrl)->toArray());
     }
 }

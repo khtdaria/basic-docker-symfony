@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev \
     libzip-dev \
     libicu-dev \
+    ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install \

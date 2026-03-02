@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Video;
+use App\Enum\VideoStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -15,18 +16,21 @@ final class VideoFixtures extends Fixture
     public const string REF_MOUNTAIN   = 'video_mountain';
 
     private const array VIDEOS = [
-        [self::REF_CITY_TOUR,  'Virtual City Tour',   'https://example.com/videos/city-tour.mp4',  300],
-        [self::REF_UNDERWATER, 'Underwater World',    'https://example.com/videos/underwater.mp4', 420],
-        [self::REF_MOUNTAIN,   'Mountain Adventure',  'https://example.com/videos/mountain.mp4',   600],
+        [self::REF_CITY_TOUR,  'Virtual City Tour',  300, 'h264'],
+        [self::REF_UNDERWATER, 'Underwater World',   420, 'h264'],
+        [self::REF_MOUNTAIN,   'Mountain Adventure', 600, 'hevc'],
     ];
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::VIDEOS as [$ref, $title, $url, $duration]) {
+        foreach (self::VIDEOS as [$ref, $title, $duration, $codec]) {
             $video = new Video();
             $video->setTitle($title);
-            $video->setUrl($url);
-            $video->setDurationSeconds($duration);
+            $video->setDurationSec($duration);
+            $video->setCodec($codec);
+            $video->setStatus(VideoStatus::Ready);
+            $video->setHlsPath('hls/playlist.m3u8');
+            $video->setPreviewImagePath('preview.jpg');
             $video->setIsActive(true);
 
             $manager->persist($video);
