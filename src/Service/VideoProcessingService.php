@@ -10,11 +10,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-final class VideoProcessingService
+final readonly class VideoProcessingService
 {
     public function __construct(
-        private readonly string $storageDir,
-        private readonly LoggerInterface $logger,
+        private string          $storageDir,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -24,8 +24,6 @@ final class VideoProcessingService
     }
 
     /**
-     * Transcodes video to HLS, generates preview and extracts metadata.
-     * Updates the entity fields but does NOT flush — caller is responsible.
      *
      * @throws ProcessFailedException|\RuntimeException
      */
@@ -51,7 +49,6 @@ final class VideoProcessingService
             mkdir($hlsDir, 0755, true);
         }
 
-        // Probe once — used for both transcoding decisions and entity metadata.
         $streamInfo = $this->probeAllStreams($originalPath);
 
         $this->logger->debug('VideoProcessingService: metadata extracted', [
@@ -62,7 +59,6 @@ final class VideoProcessingService
             'audioCodec' => $streamInfo['audioCodec'],
         ]);
 
-        // Preview is fast (~seconds) — do it before the potentially long transcode.
         $this->generatePreview($originalPath, $previewPath);
 
         $this->transcodeToHls($originalPath, $hlsDir . '/playlist.m3u8', $streamInfo);

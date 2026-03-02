@@ -20,11 +20,7 @@ class VideoRepository extends ServiceEntityRepository
         parent::__construct($registry, Video::class);
     }
 
-    /**
-     * Returns ready videos for device: device-specific first, falls back to tenant videos.
-     *
-     * @return Video[]
-     */
+    /** @return Video[] */
     public function findReadyForDevice(VrDevice $device): array
     {
         $deviceVideos = $this->createQueryBuilder('v')

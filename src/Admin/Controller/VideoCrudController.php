@@ -113,8 +113,7 @@ final class VideoCrudController extends AbstractCrudController
                 VideoStatus::Ready->value => 'success',
                 VideoStatus::Failed->value => 'danger',
             ])
-            ->onlyOnIndex()
-            ->onlyOnDetail();
+            ->onlyOnIndex();
 
         yield TextField::new('originalPath', 'Original File')->onlyOnDetail();
         yield TextField::new('hlsPath', 'HLS Playlist')->onlyOnDetail();
@@ -145,6 +144,7 @@ final class VideoCrudController extends AbstractCrudController
         $this->handleUploadedFile($entityInstance, $entityManager);
     }
 
+    // todo: move it to separate "Action"
     private function handleUploadedFile(Video $video, EntityManagerInterface $em): void
     {
         $request = $this->getContext()?->getRequest();
